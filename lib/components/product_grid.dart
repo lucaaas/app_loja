@@ -1,6 +1,6 @@
 import 'package:app_loja/components/product_item.dart';
 import 'package:app_loja/models/product.dart';
-import 'package:app_loja/providers/productProvider.dart';
+import 'package:app_loja/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
