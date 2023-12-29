@@ -1,3 +1,4 @@
+import 'package:app_loja/components/app_drawer.dart';
 import 'package:app_loja/components/badge.dart';
 import 'package:app_loja/components/product_grid.dart';
 import 'package:app_loja/providers/cart_provider.dart';
@@ -54,6 +55,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           )
         ],
       ),
+      drawer: const AppDrawer(),
       body: ProductGrid(showFavoriteOnly: showFavoriteOnly),
     );
   }
