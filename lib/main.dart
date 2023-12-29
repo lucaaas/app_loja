@@ -1,7 +1,9 @@
 import 'package:app_loja/pages/cart_page.dart';
+import 'package:app_loja/pages/orders_page.dart';
 import 'package:app_loja/pages/product_detail_page.dart';
 import 'package:app_loja/pages/products_overview_page.dart';
 import 'package:app_loja/providers/cart_provider.dart';
+import 'package:app_loja/providers/order_list.dart';
 import 'package:app_loja/providers/product_provider.dart';
 import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductProvider()),
-        ChangeNotifierProvider(create: (_) => Cart())
+        ChangeNotifierProvider(create: (_) => Cart()),
+        ChangeNotifierProvider(create: (_) => OrderList()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -28,10 +31,11 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
           fontFamily: 'Lato',
         ),
-        home: ProductsOverviewPage(),
         routes: {
-          AppRoutes.PRODUCT_DETAIL: (context) => ProductDetailPage(),
-          AppRoutes.CART: (context) => CartPage(),
+          AppRoutes.HOME: (context) => const ProductsOverviewPage(),
+          AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
+          AppRoutes.CART: (context) => const CartPage(),
+          AppRoutes.ORDER: (context) => const OrdersPage(),
         },
         debugShowCheckedModeBanner: false,
       ),
