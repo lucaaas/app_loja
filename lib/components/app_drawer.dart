@@ -12,6 +12,7 @@ class AppDrawer extends StatelessWidget {
           AppBar(
             title: const Text('Bem vindo!'),
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            automaticallyImplyLeading: false,
           ),
           const Divider(),
           ListTile(
