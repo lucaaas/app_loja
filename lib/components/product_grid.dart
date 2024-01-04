@@ -1,4 +1,4 @@
-import 'package:app_loja/components/product_item.dart';
+import 'package:app_loja/components/product_grid_item.dart';
 import 'package:app_loja/models/product.dart';
 import 'package:app_loja/providers/product_provider.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class ProductGrid extends StatelessWidget {
       ),
       itemBuilder: (BuildContext context, int index) => ChangeNotifierProvider.value(
         value: products[index],
-        child: const ProductItem(),
+        child: const ProductGridItem(),
       ),
     );
   }
