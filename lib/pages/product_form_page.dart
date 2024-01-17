@@ -32,9 +32,30 @@ class _ProductFormPageState extends State<ProductFormPage> {
     _imageUrlFocus.dispose();
   }
 
+  @override
   void initState() {
     super.initState();
     _imageUrlFocus.addListener(_updateImage);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_formData.isEmpty) {
+      final arg = ModalRoute.of(context)?.settings.arguments;
+
+      if (arg != null) {
+        final Product product = arg as Product;
+        _formData['id'] = product.id;
+        _formData['name'] = product.name;
+        _formData['price'] = product.price;
+        _formData['description'] = product.description;
+        _formData['imageUrl'] = product.imageUrl;
+
+        _imageUrlController.text = product.imageUrl;
+      }
+    }
   }
 
   void _submitForm() {
@@ -45,15 +66,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
     }
 
     _formKey.currentState?.save();
-    final Product product = Product(
-      name: _formData['name'] as String,
-      description: _formData['description'] as String,
-      price: _formData['price'] as double,
-      imageUrl: _formData['imageUrl'] as String,
-    );
 
     final ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false);
-    productProvider.addProduct(product);
+    productProvider.saveProduct(_formData);
 
     Navigator.of(context).pop();
   }
@@ -86,6 +101,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
             children: [
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Nome'),
+                initialValue: _formData['name']?.toString(),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_priceFocus),
                 onSaved: (String? name) => _formData['name'] = name ?? '',
@@ -93,6 +109,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Preço'),
+                initialValue: _formData['price']?.toString(),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_descriptionFocus),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -109,6 +126,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Descrição'),
+                initialValue: _formData['description']?.toString(),
                 focusNode: _descriptionFocus,
                 keyboardType: TextInputType.multiline,
                 maxLines: 3,

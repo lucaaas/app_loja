@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class Product with ChangeNotifier {
@@ -11,13 +9,13 @@ class Product with ChangeNotifier {
   bool isFavorite;
 
   Product({
-    String? id,
+    required this.id,
     required this.name,
     required this.description,
     required this.price,
     required this.imageUrl,
     this.isFavorite = false,
-  }) : id = id ?? Random().nextDouble().toString();
+  });
 
   void toggleFavorite() {
     isFavorite = !isFavorite;
