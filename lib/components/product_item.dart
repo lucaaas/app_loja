@@ -1,6 +1,8 @@
 import 'package:app_loja/models/product.dart';
+import 'package:app_loja/providers/product_provider.dart';
 import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
@@ -25,7 +27,23 @@ class ProductItem extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                final bool removeItem = await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Tem certeza?'),
+                    content: const Text('Deseja remover o produto'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Sim')),
+                      TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Não')),
+                    ],
+                  ),
+                );
+
+                if (removeItem) {
+                  Provider.of<ProductProvider>(context, listen: false).deleteProduct(product);
+                }
+              },
               icon: Icon(
                 Icons.delete,
                 color: Theme.of(context).colorScheme.errorContainer,

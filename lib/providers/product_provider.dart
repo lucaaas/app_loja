@@ -44,4 +44,13 @@ class ProductProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void deleteProduct(Product product) {
+    int index = _products.indexWhere((element) => element.id == product.id);
+
+    if (index >= 0) {
+      _products.removeAt(index);
+      notifyListeners();
+    }
+  }
 }
