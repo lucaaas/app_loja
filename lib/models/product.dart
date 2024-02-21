@@ -22,6 +22,17 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
+  Map<String, Object> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'price': price,
+      'imageUrl': imageUrl,
+      'isFavorite': isFavorite
+    };
+  }
+
   @override
   String toString() {
     return name;
