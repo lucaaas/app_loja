@@ -24,6 +24,8 @@ class ProductProvider with ChangeNotifier {
     data.forEach((productId, productData) {
       _products.add(Product.fromJson(productData));
     });
+
+    notifyListeners();
   }
 
   Future<void> saveProduct(Map<String, Object> data) async {
