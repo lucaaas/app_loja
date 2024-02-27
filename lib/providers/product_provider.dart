@@ -22,6 +22,7 @@ class ProductProvider with ChangeNotifier {
     Map<String, dynamic> data = jsonDecode(response.body);
 
     data.forEach((productId, productData) {
+      productData['id'] = productId;
       _products.add(Product.fromJson(productData));
     });
 
@@ -64,8 +65,15 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> updateProduct(Product product) async {
-    int index = _products.indexWhere((element) => element.id == product.id);
+    print(product.id);
+    final a = await http.patch(
+      Uri.parse('$_baseUrl/products/${product.id}.json'),
+      body: jsonEncode(product.toJson()),
+    );
 
+    print(a.body);
+
+    int index = _products.indexWhere((element) => element.id == product.id);
     if (index >= 0) {
       _products[index] = product;
       notifyListeners();
