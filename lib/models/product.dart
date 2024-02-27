@@ -17,6 +17,14 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
+  Product.fromJson(Map<String, dynamic> data)
+      : id = data['id'],
+        name = data['name'],
+        description = data['description'],
+        price = data['price'],
+        imageUrl = data['imageUrl'],
+        isFavorite = data['isFavorite'];
+
   void toggleFavorite() {
     isFavorite = !isFavorite;
     notifyListeners();
