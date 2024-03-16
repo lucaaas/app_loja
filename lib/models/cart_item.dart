@@ -12,4 +12,14 @@ class CartItem {
     required this.quantity,
     required this.price,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'productId': productId,
+      'name': name,
+      'price': price,
+      'quantity': quantity,
+    };
+  }
 }
