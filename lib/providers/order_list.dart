@@ -28,4 +28,18 @@ class OrderList with ChangeNotifier {
     _items.insert(0, order);
     notifyListeners();
   }
+
+  Future<void> loadOrders() async {
+    _items.clear();
+
+    final response = await http.get(Uri.parse('$_baseUrl/orders.json'));
+    Map<String, dynamic> data = jsonDecode(response.body);
+
+    data.forEach((orderId, orderData) {
+      orderData['id'] = orderId;
+      _items.add(Order.fromJson(orderData));
+    });
+
+    notifyListeners();
+  }
 }

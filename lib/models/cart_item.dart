@@ -13,6 +13,13 @@ class CartItem {
     required this.price,
   });
 
+  CartItem.fromJson(Map<String, dynamic> data)
+      : id = data['id'],
+        productId = data['productId'],
+        name = data['name'],
+        price = data['price'],
+        quantity = data['quantity'];
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

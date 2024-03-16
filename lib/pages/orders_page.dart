@@ -4,8 +4,21 @@ import 'package:app_loja/providers/order_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class OrdersPage extends StatelessWidget {
+class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
+
+  @override
+  State<OrdersPage> createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends State<OrdersPage> {
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<OrderList>(context, listen: false).loadOrders().then((value) => setState(() => _isLoading = false));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +30,14 @@ class OrdersPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       drawer: const AppDrawer(),
-      body: ListView.builder(
-        itemCount: orderList.itemsCount,
-        itemBuilder: (context, index) => OrderWidget(order: orderList.items[index]),
+      body: RefreshIndicator(
+        onRefresh: orderList.loadOrders,
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: orderList.itemsCount,
+                itemBuilder: (context, index) => OrderWidget(order: orderList.items[index]),
+              ),
       ),
     );
   }
