@@ -1,11 +1,26 @@
+import 'dart:io';
+
 import 'package:app_loja/models/product.dart';
 import 'package:app_loja/providers/cart_provider.dart';
+import 'package:app_loja/providers/product_provider.dart';
 import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProductGridItem extends StatelessWidget {
   const ProductGridItem({super.key});
+
+  Future<void> _toggleFavorite(Product product, BuildContext context) async {
+    product.toggleFavorite();
+    try {
+      await Provider.of<ProductProvider>(context, listen: false).updateProduct(product);
+    } on HttpException catch (error) {
+      ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
+      scaffoldMessenger.showSnackBar(SnackBar(content: Text(error.toString())));
+
+      product.toggleFavorite();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +35,7 @@ class ProductGridItem extends StatelessWidget {
           leading: Consumer<Product>(
             builder: (context, value, _) => IconButton(
               icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
-              onPressed: product.toggleFavorite,
+              onPressed: () => _toggleFavorite(product, context),
               color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
           ),
