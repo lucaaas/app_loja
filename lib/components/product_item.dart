@@ -1,3 +1,4 @@
+import 'package:app_loja/exceptions/http_exception.dart';
 import 'package:app_loja/models/product.dart';
 import 'package:app_loja/providers/product_provider.dart';
 import 'package:app_loja/utils/app_routes.dart';
@@ -11,6 +12,8 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
+
     return ListTile(
       leading: CircleAvatar(backgroundImage: NetworkImage(product.imageUrl)),
       title: Text(product.name),
@@ -41,7 +44,11 @@ class ProductItem extends StatelessWidget {
                 );
 
                 if (removeItem) {
-                  Provider.of<ProductProvider>(context, listen: false).deleteProduct(product);
+                  try {
+                    await Provider.of<ProductProvider>(context, listen: false).deleteProduct(product);
+                  } on HttpException catch (error) {
+                    scaffoldMessenger.showSnackBar(SnackBar(content: Text(error.toString())));
+                  }
                 }
               },
               icon: Icon(
